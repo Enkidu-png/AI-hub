@@ -2,73 +2,48 @@ import React, { useState, useMemo } from 'react';
 import { 
   Search, 
   LayoutGrid, 
-  Type, 
-  Image as ImageIcon, 
-  Code, 
-  BarChart3, 
   Menu, 
   X,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  GraduationCap,
+  FileText,
+  BookOpen
 } from 'lucide-react';
 import { cn } from './lib/utils';
 import { AITool, ToolCategory } from './types';
 
-// Tool Components
-import Summarizer from './components/tools/Summarizer';
-import ImageGen from './components/tools/ImageGen';
-import CodeExplainer from './components/tools/CodeExplainer';
-import SentimentAnalyzer from './components/tools/SentimentAnalyzer';
-
 const TOOLS: AITool[] = [
   {
-    id: 'summarizer',
-    name: 'Text Summarizer',
-    description: 'Condense long articles and documents into key takeaways.',
-    icon: 'Type',
-    category: 'Text',
-    type: 'component',
-    component: Summarizer
-  },
-  {
-    id: 'image-gen',
-    name: 'Image Generator',
-    description: 'Create stunning visuals from simple text descriptions.',
-    icon: 'ImageIcon',
-    category: 'Image',
-    type: 'component',
-    component: ImageGen
-  },
-  {
-    id: 'code-explainer',
-    name: 'Code Explainer',
-    description: 'Understand complex code snippets with step-by-step breakdowns.',
-    icon: 'Code',
-    category: 'Code',
-    type: 'component',
-    component: CodeExplainer
-  },
-  {
-    id: 'sentiment',
-    name: 'Sentiment Analyzer',
-    description: 'Detect the emotional tone and intent behind any text.',
-    icon: 'BarChart3',
-    category: 'Analysis',
-    type: 'component',
-    component: SentimentAnalyzer
-  },
-  {
-    id: 'my-other-app',
-    name: 'Existing AI Project',
-    description: 'An example of an external app embedded via iframe.',
-    icon: 'Sparkles',
+    id: 'generowanie-szkolen',
+    name: 'Generowanie Szkoleń',
+    description: 'Zaawansowane narzędzie do automatycznego generowania programów i materiałów szkoleniowych.',
+    icon: 'GraduationCap',
     category: 'Project',
     type: 'iframe',
-    url: 'https://www.google.com/search?q=AI+Studio&igu=1' // Example embeddable URL
+    url: 'https://generowanieszkolen.vercel.app/'
+  },
+  {
+    id: 'article-generator',
+    name: 'Article Generator',
+    description: 'Narzędzie do automatycznego generowania artykułów i treści marketingowych.',
+    icon: 'FileText',
+    category: 'Project',
+    type: 'iframe',
+    url: 'https://article-generator-bw0ut9i23-enkidu-pngs-projects.vercel.app/'
+  },
+  {
+    id: 'learn-assecods',
+    name: 'Learn Assecods',
+    description: 'Platforma edukacyjna do nauki programowania i technologii AI.',
+    icon: 'BookOpen',
+    category: 'Project',
+    type: 'iframe',
+    url: 'https://learn.assecods.pl'
   }
 ];
 
-const CATEGORIES: ToolCategory[] = ['All', 'Text', 'Image', 'Code', 'Analysis', 'Project'];
+const CATEGORIES: ToolCategory[] = ['All', 'Project'];
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -97,10 +72,9 @@ export default function App() {
 
   const getIcon = (iconName: string, className?: string) => {
     switch (iconName) {
-      case 'Type': return <Type className={className} />;
-      case 'ImageIcon': return <ImageIcon className={className} />;
-      case 'Code': return <Code className={className} />;
-      case 'BarChart3': return <BarChart3 className={className} />;
+      case 'GraduationCap': return <GraduationCap className={className} />;
+      case 'FileText': return <FileText className={className} />;
+      case 'BookOpen': return <BookOpen className={className} />;
       default: return <Sparkles className={className} />;
     }
   };
@@ -121,35 +95,54 @@ export default function App() {
           {isSidebarOpen && <span className="font-bold tracking-tight text-xl">AI Hub</span>}
         </div>
 
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-          {isSidebarOpen && (
-            <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 px-2 mb-4">
-              Categories
-            </p>
-          )}
-          {CATEGORIES.map((cat) => (
+        <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
+          {/* Kategorie Section */}
+          <div>
+            {isSidebarOpen && (
+              <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 px-2 mb-4">
+                Przegląd
+              </p>
+            )}
             <button
-              key={cat}
               onClick={() => {
-                setSelectedCategory(cat);
+                setSelectedCategory('All');
                 setActiveToolId(null);
               }}
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all group",
-                selectedCategory === cat && !activeToolId
+                selectedCategory === 'All' && !activeToolId
                   ? "bg-zinc-100 text-black font-medium" 
                   : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900"
               )}
             >
-              {cat === 'All' && <LayoutGrid className="w-5 h-5" />}
-              {cat === 'Text' && <Type className="w-5 h-5" />}
-              {cat === 'Image' && <ImageIcon className="w-5 h-5" />}
-              {cat === 'Code' && <Code className="w-5 h-5" />}
-              {cat === 'Analysis' && <BarChart3 className="w-5 h-5" />}
-              {cat === 'Project' && <Sparkles className="w-5 h-5" />}
-              {isSidebarOpen && <span>{cat}</span>}
+              <LayoutGrid className="w-5 h-5" />
+              {isSidebarOpen && <span>Wszystkie</span>}
             </button>
-          ))}
+          </div>
+
+          {/* Aplikacje Section */}
+          <div className="space-y-1">
+            {isSidebarOpen && (
+              <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 px-2 mb-4">
+                Twoje Aplikacje
+              </p>
+            )}
+            {TOOLS.map((tool) => (
+              <button
+                key={tool.id}
+                onClick={() => handleToolClick(tool)}
+                className={cn(
+                  "w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all group",
+                  activeToolId === tool.id
+                    ? "bg-zinc-100 text-black font-medium" 
+                    : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900"
+                )}
+              >
+                {getIcon(tool.icon, "w-5 h-5")}
+                {isSidebarOpen && <span className="truncate">{tool.name}</span>}
+              </button>
+            ))}
+          </div>
         </nav>
 
         <div className="p-4 border-t border-zinc-100">
@@ -171,7 +164,7 @@ export default function App() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
               <input
                 type="text"
-                placeholder="Search AI tools..."
+                placeholder="Szukaj narzędzi AI..."
                 className="w-full pl-10 pr-4 py-2 bg-zinc-100 border-none rounded-xl text-sm focus:ring-2 focus:ring-black/5 transition-all"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -196,7 +189,7 @@ export default function App() {
                   className="mb-6 flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-black transition-colors"
                 >
                   <ChevronRight className="w-4 h-4 rotate-180" />
-                  Back to Tools
+                  Powrót do narzędzi
                 </button>
               </div>
               
@@ -219,9 +212,9 @@ export default function App() {
               <div className="space-y-8">
                 <div className="space-y-1">
                   <h1 className="text-3xl font-bold tracking-tight">
-                    {selectedCategory === 'All' ? 'All AI Tools' : `${selectedCategory} Tools`}
+                    {selectedCategory === 'All' ? 'Wszystkie Narzędzia AI' : 'Twoje Projekty'}
                   </h1>
-                  <p className="text-zinc-500">Explore and use various AI-powered utilities.</p>
+                  <p className="text-zinc-500">Odkrywaj i korzystaj z zaawansowanych narzędzi AI.</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -239,7 +232,7 @@ export default function App() {
                         {tool.description}
                       </p>
                       <div className="flex items-center text-sm font-semibold text-black opacity-0 group-hover:opacity-100 transition-opacity">
-                        {tool.type === 'external' ? 'Open Link' : 'Open Tool'}
+                        {tool.type === 'external' ? 'Otwórz link' : 'Otwórz narzędzie'}
                         <ChevronRight className="w-4 h-4 ml-1" />
                       </div>
                     </button>
@@ -249,8 +242,8 @@ export default function App() {
                       <div className="w-16 h-16 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Search className="w-8 h-8 text-zinc-300" />
                       </div>
-                      <h3 className="text-lg font-medium text-zinc-900">No tools found</h3>
-                      <p className="text-zinc-500">Try adjusting your search or category filter.</p>
+                      <h3 className="text-lg font-medium text-zinc-900">Nie znaleziono narzędzi</h3>
+                      <p className="text-zinc-500">Spróbuj zmienić zapytanie lub filtr kategorii.</p>
                     </div>
                   )}
                 </div>
